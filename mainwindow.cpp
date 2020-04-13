@@ -4,6 +4,7 @@
 #include <QMouseEvent>
 #include <QDebug>
 #include <dialog.h>
+#include <youwin.h>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,8 +14,17 @@ MainWindow::MainWindow(QWidget *parent)
     setWindowTitle("Pig Pekin");
     setWindowIcon(QIcon(":/img/icon.jpg"));
     game = new GameCore();
+    timeLabel = new QLabel(this);
+    countLabel = new QLabel(this);
+    timer = new QTimer(this); // Ê±¼ä´¥·¢Æ÷
     setFixedSize(3*blockSize+offsetX*2,3*blockSize+offsetY*2);
+    timeLabel->setGeometry(100,660,300,35); timeLabel->setFont(QFont("Microsoft YaHei",10,75)); timeLabel->setText("Time-Consuming: " + QString::number(game->time_cnt));
+    countLabel->setGeometry(350,660,300,35); countLabel->setFont(QFont("Microsoft YaHei",10,75));
     connect(ui->actionAbout,SIGNAL(triggered(bool)),this,SLOT(onAboutClick()));
+    connect(ui->actionRestart,SIGNAL(triggered(bool)),this,SLOT(onRestartClick()));
+    connect(ui->actionClose,SIGNAL(triggered(bool)),qApp,SLOT(quit()));
+    connect(timer,SIGNAL(timeout()),this,SLOT(updateTimer()));
+    timer->start(1000);
 }
 
 void MainWindow::paintEvent(QPaintEvent *e) {
@@ -37,6 +47,7 @@ void MainWindow::paintEvent(QPaintEvent *e) {
             }
         }
     }
+    updateCount();
 }
 
 void MainWindow::mousePressEvent(QMouseEvent *e) {
@@ -46,14 +57,38 @@ void MainWindow::mousePressEvent(QMouseEvent *e) {
         int n = (y-offsetY) / blockSize + 1;
         int m = (x-offsetX) / blockSize + 1;
         game->move(m,n);
+//        for (int i = 1; i <= 3; i++) {
+//            for (int j = 1; j <= 3; j++) {
+//                qDebug() << game->Map[j][i];
+//            }
+//            qDebug();
+//        }
         update();
-        game->check();
+        if(game->check()) {
+            timer->stop();
+            youwin *win = new youwin;
+            win->show();
+        }
     }
 }
 
 void MainWindow::onAboutClick() {
     Dialog *log = new Dialog();
     log->show();
+}
+
+void MainWindow::onRestartClick() {
+    game->restartGame();
+    update();
+}
+
+void MainWindow::updateTimer() {
+    game->time_cnt++;
+    timeLabel->setText("Time-Consuming: " + QString::number(game->time_cnt));
+}
+
+void MainWindow::updateCount() {
+    countLabel->setText("Step-Count: " + QString::number(game->step_cnt));
 }
 
 MainWindow::~MainWindow()

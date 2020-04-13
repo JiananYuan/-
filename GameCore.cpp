@@ -2,16 +2,26 @@
 #include <time.h>
 #include <stdlib.h>
 #include <iostream>
-#include <qDebug>
+#include <QDateTime>
+#include <QTextStream>
+#include <QDateTime>
+#include <QFile>
+#include <QDebug>
 using namespace std;
 
 GameCore::GameCore() {
+    restartGame();
+}
+
+void GameCore::restartGame() {
     for (int i = 1; i <= 3; i++) {
         for (int j = 1; j <= 3; j++) {
             Map[i][j] = 0;
         }
     }
     int u = 2;
+    step_cnt = 0;
+    time_cnt = 0;
     srand((unsigned)time(nullptr));
     while (u <= 9) {
         int x = (rand() % 3) + 1;
@@ -30,6 +40,7 @@ void GameCore::move(int x,int y) {
             int ty = y + nxt[i][1];
             if(tx >= 1 && ty >= 1 && tx <= 3 && ty <= 3 && Map[tx][ty] == 0) {
                 swap(Map[tx][ty],Map[x][y]);
+                step_cnt++;
                 return ;
             }
         }
@@ -37,10 +48,16 @@ void GameCore::move(int x,int y) {
 }
 
 bool GameCore::check() {
-    if(Map[1][1] == 0 && Map[1][2] == 2 && Map[1][3] == 3) {
-        if(Map[2][1] == 4 && Map[2][2] == 5 && Map[2][3] == 6) {
-            if(Map[3][1] == 7 && Map[3][2] == 8 && Map[3][3] == 9) {
-                qDebug() << "Winner";
+    if(Map[1][1] == 0 && Map[2][1] == 2 && Map[3][1] == 3) {
+        if(Map[1][2] == 4 && Map[2][2] == 5 && Map[3][2] == 6) {
+            if(Map[1][3] == 7 && Map[2][3] == 8 && Map[3][3] == 9) {
+                QFile f("./winner-history.txt");
+                if (f.open(QIODevice::WriteOnly|QIODevice::Text|QIODevice::Append)) {
+                    QTextStream out(&f);
+                    out << QDateTime::currentDateTime().toString("yyyy.MM.dd hh:mm:ss.zzz ddd") << " ";
+                    out << step_cnt << "²½ " << time_cnt << "Ãë" << endl;
+                    f.close();
+                }
                 return true;
             }
         }

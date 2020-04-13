@@ -19,16 +19,19 @@ SOURCES += \
     GameCore.cpp \
     dialog.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    youwin.cpp
 
 HEADERS += \
     GameCore.h \
     dialog.h \
-    mainwindow.h
+    mainwindow.h \
+    youwin.h
 
 FORMS += \
     dialog.ui \
-    mainwindow.ui
+    mainwindow.ui \
+    youwin.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -38,3 +41,4 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 RESOURCES += \
     img.qrc
 
+RC_ICONS = icon.ico

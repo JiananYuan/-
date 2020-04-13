@@ -6,6 +6,8 @@ Dialog::Dialog(QWidget *parent) :
     ui(new Ui::Dialog)
 {
     ui->setupUi(this);
+    setWindowTitle("About");
+    setWindowIcon(QIcon(":/img/ac.png"));
     connect(ui->pushButton,SIGNAL(clicked()),this,SLOT(accept()));
 }
 

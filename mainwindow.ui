@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>1047</width>
+    <height>723</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -19,7 +19,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
+     <width>1047</width>
      <height>26</height>
     </rect>
    </property>
@@ -27,6 +27,9 @@
     <property name="title">
      <string>Core</string>
     </property>
+    <addaction name="actionRestart"/>
+    <addaction name="actionClose"/>
+    <addaction name="separator"/>
     <addaction name="actionAbout"/>
    </widget>
    <addaction name="menuCore"/>
@@ -35,6 +38,16 @@
   <action name="actionAbout">
    <property name="text">
     <string>About..</string>
+   </property>
+  </action>
+  <action name="actionRestart">
+   <property name="text">
+    <string>Restart</string>
+   </property>
+  </action>
+  <action name="actionClose">
+   <property name="text">
+    <string>Close</string>
    </property>
   </action>
  </widget>
