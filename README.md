@@ -1,4 +1,4 @@
-# 9宫格拼图游戏
+# 九宫格拼图游戏
 Qt打包发布参考： https://www.cnblogs.com/linuxAndMcu/p/10974927.html
 
 项目exe下载地址： 
